@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
+    <title><%=title%></title>
+</head>
+<body>
+
+    <div class= "container">
+        
+  
+          <form>
+            <input type="text" id= 'display' />
+          </form>
+         
+          <div class="keypad">
+            <button class="gray " id="clear" onclick="allClear()">AC</button>
+            <button class="gray" id="backspace">±</button>
+            <button class="number gray" >%</button>
+            <button class="number yellow" >&divide;</button>
+            <button class="number">7</button>
+            <button class="number">8</button>
+            <button class="number">9</button>
+            <button class="number yellow" >*</button>
+            <button class="number">4</button>
+            <button class="number">5</button>
+            <button class="number">6</button>
+            <button class="number yellow" >-</button>
+            <button class="number">1</button>
+            <button class="number">2</button>
+            <button class="number">3</button>
+            <button class="number yellow" >+</button>
+            <button class="number" id="zero">0</button>
+            <button class="number">.</button>
+            <button class="yellow" id="res">=</button>
+          </div>
+        </div>
+
+
+        <script>
+            let btn = document.getElementsByClassName('number');
+            let clear = document.getElementById('clear');
+            let inpt=document.getElementById('display');
+
+
+            for(let i=0;i<btn.length;i++){
+                btn[i].addEventListener('click',onclick)
+                // console.log(btn[i])
+            }
+
+            function onclick(e){
+                inpt.value +=e.target.innerHTML;
+            }
+
+            function allClear () {
+                inpt.value = "";
+            }
+
+
+            let res=document.getElementById('res');
+            res.addEventListener('click',final)
+            function final(){
+                let data={
+                    val:inpt.value
+                }
+               fetch('http://localhost:3000/calc',{
+                   method:"POST",
+                   body: JSON.stringify(data),
+                   headers:{
+                    "Content-type": "application/json"
+                   }
+               }).then(response => response.json()) 
+                .then(json => inpt.value=json.result)
+                
+               
+
+            }
+
+            
+        </script>
+</body>
+</html> 
